@@ -6,7 +6,6 @@ import pandas as pd
 # 1. Make a function named get_titanic_data that returns the titanic data from the codeup data science database as a pandas data frame. 
 # Obtain your data from the Codeup Data Science Database.
 
-
 def get_titanic_data():
     """
     Gets all data from the titanic_db in sql. To make it work, use 'df = get_titanic_data()'
@@ -88,3 +87,41 @@ def get_telco_data():
 # To do this, edit the beginning of the function to check for the local filename of telco.csv, titanic.csv, or iris.csv. 
 # If they exist, use the .csv file. If the file doesn't exist, then produce the SQL and pandas necessary to create a dataframe, 
 # then write the dataframe to a .csv file with the appropriate name.
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Just added for my use
+
+def get_summary(df):
+    '''
+    get_summary will take in one positional argument, a single pandas DF, 
+    and will output info to the console regarding the following info:
+    - print the first 3 rows
+    - print the # of rows and columns
+    - print the columns
+    - print the dtypes of each col
+    - print summary statistics
+    
+    return:none
+    '''
+
+    print('First 3 rows of the dataframe:')
+    print(df.head(3))
+    print('~~~~~~~~~~~~~~')
+    print('Number of Rows and Cols in DF:')
+    print(f'Rows: {df.shape[0]}, Cols: {df.shape[1]}')
+    print('~~~~~~~~~~~~~~')
+    print('Column Names:')
+    [print(col) for col in df.columns]
+    print('~~~~~~~~~~~~~~')
+    [print(col,'- datatype:', df[col].dtype) for col in df.columns]
+    print('~~~~~~~~~~~~~~')
+    print(df.describe().T)
+    print('~~~~~~~~~~~~~~')
+    print('Descriptive stats for Object Variables: ')
+    print(df.loc[:, df.dtypes=='O'].describe().T)
+    print('~~~~~~~~~~~~~~')
+    for col in df.loc[:, df.dtypes=='O']:
+        if df[col].nunique() > 10:
+            print(f'Column {col} has too many uniques ({df[col].nunique()}) to display')
+        else:
+            print(f' {col}: ', df[col].unique())
