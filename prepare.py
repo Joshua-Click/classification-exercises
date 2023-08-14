@@ -5,7 +5,7 @@ def split_data(df, target_variable):
     '''
     train_validate, test = train_test_split(df, test_size=.2, random_state=123, stratify=df[target_variable])
     train, validate = train_test_split(train_validate, 
-                                       test_size=.3, 
+                                       test_size=.25, 
                                        random_state=123, 
                                        stratify=train_validate[target_variable])
     
