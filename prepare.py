@@ -8,10 +8,10 @@ def split_data(df, target_variable):
     take in a DataFrame and return train, validate, and test DataFrames; stratify on survived.
     return train, validate, test DataFrames.
     '''
-    train_validate, test = train_test_split(df, test_size=.2, random_state=123, stratify=df[target_variable])
+    train_validate, test = train_test_split(df, test_size=.2, random_state=1108, stratify=df[target_variable])
     train, validate = train_test_split(train_validate, 
-                                       test_size=.25, 
-                                       random_state=123, 
+                                       test_size=.3, 
+                                       random_state=1108, 
                                        stratify=train_validate[target_variable])
     
     print(f'Train: {len(train)/len(df)}')
@@ -38,23 +38,6 @@ def get_metrics(model,xtrain,ytrain,xtest,ytest):
     print("Classification Report:")
     print(classification_report(ytest, preds))
 
-def clean_titanic1(df):
-    '''
-    This function will take in a dataframe
-    drop unwanted columns
-    and impute age and embarked columns
-    Additionally, it will create dummy columns
-    then return a clean dataframe
-    '''
-    #drop columns
-    df = df.drop(columns =['embark_town','class','deck'])
-    #impute columns
-    df['age'] = df['age'].fillna(df.age.mean())
-    df['embarked'] = df['embarked'].fillna(value='S')
-    #create dummies
-    dummy_df = pd.get_dummies(df[['sex','embarked']], drop_first=True)
-    df = pd.concat([df, dummy_df], axis=1)
-    return df
 
 
 
@@ -107,11 +90,11 @@ def clean_titanic(df):
     # encode categorical values: 
     train = pd.concat(
     [train, pd.get_dummies(train[['sex', 'embark_town']],
-                        drop_first=True)], axis=1)
+                        drop_first=True, dtype=int)], axis=1)
     validate = pd.concat(
     [validate, pd.get_dummies(validate[['sex', 'embark_town']],
-                        drop_first=True)], axis=1)
+                        drop_first=True, dtype=int)], axis=1)
     test = pd.concat(
     [test, pd.get_dummies(test[['sex', 'embark_town']],
-                        drop_first=True)], axis=1)                                                  
+                        drop_first=True, dtype=int)], axis=1)                                                  
     return train, validate, test
