@@ -3,6 +3,40 @@ from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 
+
+def prep_iris(iris_df):
+    # drop columns
+      # rename species_name column to species
+    iris_df =  iris_df.drop(['species_id' , 'measurement_id'], axis=1).rename(columns={'species_name': 'species'})
+    
+    # create dummies for species and then join to iris_df
+    dummy_iris = pd.get_dummies(iris_df['species'], drop_first=True, dtype=int)
+    iris_df = pd.concat([iris_df, dummy_iris], axis=1)
+    
+    return iris_df
+
+
+def prep_telco(telco_df):
+    #drop duplicate columns
+    telco_df = telco_df.drop(columns =['payment_type_id','internet_service_type_id','contract_type_id'])
+    #create dummies
+    dummy_list = ['gender','partner', 'dependents', 'phone_service', 'multiple_lines', 'online_security', 'online_backup', 'device_protection', 'tech_support', 'streaming_tv', 'streaming_movies', 'paperless_billing', 'churn', 'contract_type', 'internet_service_type', 'payment_type']
+    dummy_df = pd.get_dummies(telco_df[dummy_list], dtype=int, drop_first=True)
+    # join dummy & telco_df
+    telco_df = pd.concat([telco_df, dummy_df], axis=1)
+    # drop str column categories
+    cols_to_drop = ['gender','partner', 'dependents', 'phone_service', 'multiple_lines', 'online_security', 'online_backup', 'device_protection', 'tech_support', 'streaming_tv', 'streaming_movies', 'paperless_billing', 'churn', 'contract_type', 'internet_service_type', 'payment_type']
+    telco_df = telco_df.drop(columns= cols_to_drop)
+    #total_charges.str.replace(' ', '0').astype(float)
+    telco_df.total_charges = telco_df.total_charges.str.replace(' ', '0').astype(float)
+
+    return telco_df
+
+
+
+
+
+
 def split_data(df, target_variable):
     '''
     take in a DataFrame and return train, validate, and test DataFrames; stratify on survived.
