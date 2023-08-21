@@ -130,5 +130,6 @@ def clean_titanic(df):
                         drop_first=True, dtype=int)], axis=1)
     test = pd.concat(
     [test, pd.get_dummies(test[['sex', 'embark_town']],
-                        drop_first=True, dtype=int)], axis=1)                                                  
+                        drop_first=True, dtype=int)], axis=1)        
+                                                                  
     return train, validate, test
